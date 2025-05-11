@@ -43,6 +43,11 @@ FPS = 60
 # картинка, координата х, координата y, скорость, размер по х, размер по y
 player_r = Player("racket.png", 620, 200, 5, 50, 200)
 player_l = Player("racket.png",30, 200 , 5, 50, 200)
+
+ball = GameSprite("ball.png",200,200,5,50,50)
+
+speed_x = ball.speed
+speed_y = ball.speed
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -50,11 +55,19 @@ while game:
     if finish != True:
         # window.blit(background,(0, 0))
         window.fill(BACK)
-        player_l.reset()
-        player_r.reset()
-
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
         player_r.update_r()
         player_l.update_l()
+
+        if ball.rect.y > win_height - 50 or ball.rect.y < 0:
+            speed_y *= -1
+        if sprite.collide_rect(player_l, ball) or sprite.collide_rect(player_r, ball):
+            speed_x *= -1
+
+        player_l.reset()
+        player_r.reset()
+        ball.reset()
 
     display.update()
     clock.tick(FPS)
