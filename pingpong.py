@@ -48,6 +48,11 @@ ball = GameSprite("ball.png",200,200,5,50,50)
 
 speed_x = ball.speed
 speed_y = ball.speed
+
+font.init()
+font = font.Font(None, 35)
+win_r = font.render("Правый игрок победил", True, (0,255,0))
+win_l = font.render("Левый игрок победил", True, (0,255,0))
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -64,6 +69,13 @@ while game:
             speed_y *= -1
         if sprite.collide_rect(player_l, ball) or sprite.collide_rect(player_r, ball):
             speed_x *= -1
+
+        if ball.rect.x < 0: # левая граница - проигрывает левый
+            window.blit(win_r, (200,200))
+            finish = True
+        if ball.rect.x > win_width: # правая граница - проигрывает правый
+            window.blit(win_l, (200,200))
+            finish = True
 
         player_l.reset()
         player_r.reset()
